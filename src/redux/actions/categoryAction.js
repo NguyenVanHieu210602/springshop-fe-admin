@@ -1,5 +1,9 @@
 import CategoryService from "../../services/categoryService";
-import { CATEGORY_SET } from "./actionTypes";
+import {
+  CATEGORIES_SET,
+  CATEGORY_SET,
+  CATEGORY_STATE_CLEAR,
+} from "./actionTypes";
 
 export const insertCategory = (category, navigate) => async (dispatch) => {
   const service = new CategoryService();
@@ -22,4 +26,28 @@ export const insertCategory = (category, navigate) => async (dispatch) => {
   }
 
   navigate("/categories/list");
+};
+
+export const getCategories = () => async (dispatch) => {
+  const service = new CategoryService();
+
+  try {
+    console.log("get categories");
+
+    const response = await service.getCategories();
+
+    console.log(response);
+    if (response.status === 200) {
+      dispatch({
+        type: CATEGORIES_SET,
+        payload: response.data,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const clearCategoryState = () => (dispatch) => {
+  dispatch({ type: CATEGORY_STATE_CLEAR });
 };
